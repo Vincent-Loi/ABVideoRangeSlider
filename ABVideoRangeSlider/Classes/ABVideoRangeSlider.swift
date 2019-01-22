@@ -31,6 +31,8 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
     var bottomLine          = ABBorder()
     var progressIndicator   = ABProgressIndicator()
     var draggableView       = UIView()
+    var startAlphaView      = UIView()
+    var endAlphaView        = UIView()
 
     public var startTimeView       = ABTimeView()
     public var endTimeView         = ABTimeView()
@@ -95,11 +97,11 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
 
         // Setup Thumbnail View
         thumbnailView = UIView(frame: CGRect(x: 0,
-                                            y: -topBorderHeight + self.frame.size.height - thumbnailViewOffset * 3,
-                                            width: self.frame.size.width,
-                                            height: 40))
+                                             y: -topBorderHeight + self.frame.size.height - thumbnailViewOffset * 3,
+                                             width: self.frame.size.width,
+                                             height: thumbnailHeight))
         addSubview(thumbnailView)
-
+        
         // Setup Start Indicator
         let startDrag = UIPanGestureRecognizer(target:self,
                                                action: #selector(startDragged(recognizer:)))
@@ -126,6 +128,24 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
         self.addSubview(endIndicator)
 
 
+        startAlphaView = UIView(frame: CGRect(x: 0,
+                                              y: -topBorderHeight + self.frame.size.height - thumbnailViewOffset * 3,
+                                              width: self.frame.size.width,
+                                              height: thumbnailHeight))
+        
+        startAlphaView.backgroundColor = .black
+        startAlphaView.alpha = 0.5
+        self.addSubview(startAlphaView)
+        
+        endAlphaView = UIView(frame: CGRect(x: 0,
+                                            y: -topBorderHeight + self.frame.size.height - thumbnailViewOffset * 3,
+                                            width: self.frame.size.width,
+                                            height: thumbnailHeight))
+        
+        endAlphaView.backgroundColor = .black
+        endAlphaView.alpha = 0.5
+        self.addSubview(endAlphaView)
+        
         // Setup Top and bottom line
 
         topLine = ABBorder(frame: CGRect(x: 0,
@@ -203,7 +223,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
     public func updateProgressIndicator(seconds: Float64){
         if !isReceivingGesture {
             let endSeconds = secondsFromValue(value: self.endPercentage)
-
+            
             if seconds >= endSeconds {
                 self.resetProgressPosition()
             } else {
@@ -337,7 +357,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
 
         currentIndicator.center = CGPoint(x: position , y: currentIndicator.center.y)
 
-		let percentage = currentIndicator.center.x * 100 / self.frame.width
+        let percentage = currentIndicator.center.x * 100 / self.frame.width
 
         let startSeconds = secondsFromValue(value: self.startPercentage)
         let endSeconds = secondsFromValue(value: self.endPercentage)
@@ -376,7 +396,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
         layoutSubviews()
     }
 
-	@objc func progressDragged(recognizer: UIPanGestureRecognizer){
+    @objc func progressDragged(recognizer: UIPanGestureRecognizer){
         if !isProgressIndicatorDraggable {
             return
         }
@@ -414,7 +434,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
         layoutSubviews()
     }
 
-	@objc func viewDragged(recognizer: UIPanGestureRecognizer){
+    @objc func viewDragged(recognizer: UIPanGestureRecognizer){
         if !isSliderDraggable {
             return
         }
@@ -562,6 +582,15 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
                                      width: endIndicator.frame.origin.x - startIndicator.frame.origin.x - endIndicator.frame.size.width,
                                      height: self.frame.height)
 
+        startAlphaView.frame = CGRect(x: 0,
+                                      y: thumbnailView.frame.origin.y,
+                                      width: startIndicator.frame.origin.x + startIndicator.frame.width,
+                                      height: thumbnailView.frame.height)
+
+        endAlphaView.frame = CGRect(x: endIndicator.frame.origin.x,
+                                    y: thumbnailView.frame.origin.y,
+                                    width: self.frame.width - endIndicator.frame.origin.x,
+                                    height: thumbnailView.frame.height)
 
         topLine.frame = CGRect(x: startIndicator.frame.origin.x + startIndicator.frame.width,
                                y: -topBorderHeight,
@@ -601,6 +630,6 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
     }
 
     deinit {
-      // removeObserver(self, forKeyPath: "bounds")
+        // removeObserver(self, forKeyPath: "bounds")
     }
 }
