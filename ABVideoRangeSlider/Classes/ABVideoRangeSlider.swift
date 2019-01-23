@@ -267,6 +267,15 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
         startTimeView.isHidden = true
         endTimeView.isHidden = true
     }
+    
+    public func setFullSliderDraggable(_ draggable: Bool) {
+        if draggable {
+            draggableView.removeFromSuperview()
+            insertSubview(draggableView, aboveSubview: thumbnailView)
+        } else {
+            sendSubviewToBack(draggableView)
+        }
+    }
 
     public func setVideoURL(videoURL: URL){
         self.duration = ABVideoHelper.videoDuration(videoURL: videoURL)
