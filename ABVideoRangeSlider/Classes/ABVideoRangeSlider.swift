@@ -71,7 +71,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
     var isUpdatingThumbnails = false
     var isReceivingGesture: Bool = false
 
-    var thumbnailView: UIView!
+    public var thumbnailView: UIView!
 
     public enum ABTimeViewPosition{
         case top
@@ -98,7 +98,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
         // Setup Thumbnail View
         thumbnailView = UIView(frame: CGRect(x: 0,
                                              y: -topBorderHeight + self.frame.size.height - thumbnailViewOffset * 3,
-                                             width: self.frame.size.width,
+                                             width: self.frame.size.width - 50,
                                              height: thumbnailHeight))
         addSubview(thumbnailView)
         
