@@ -98,7 +98,7 @@ public class ABVideoRangeSlider: UIView, UIGestureRecognizerDelegate {
         // Setup Thumbnail View
         thumbnailView = UIView(frame: CGRect(x: 0,
                                              y: -topBorderHeight + self.frame.size.height - thumbnailViewOffset * 3,
-                                             width: self.frame.size.width - 50,
+                                             width: self.frame.size.width,
                                              height: thumbnailHeight))
         addSubview(thumbnailView)
         
